@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Animated Weather Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(120deg, #89f7fe, #66a6ff);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: background 0.5s;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+        }
+        .search-box input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            width: 250px;
+            font-size: 16px;
+        }
+        .weather-card {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        #weather-icon {
+            width: 120px;
+            transition: transform 0.5s;
+        }
+        #weather-icon:hover {
+            transform: scale(1.2);
+        }
+        #toggle-mode {
+            margin-top: 10px;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="search-box">
+            <input type="text" id="city-input" placeholder="Enter City (e.g., London, New York, Tokyo)" onkeypress="handleKeyPress(event)">
+            <button onclick="getWeather()">🔍</button>
+        </div>
+        <div class="weather-card">
+            <h2 id="city-name">City</h2>
+            <p id="temperature">--°C</p>
+            <p id="description">Weather</p>
+            <img id="weather-icon" src="" alt="Weather Icon">
+            <button onclick="toggleUnit()">°C / °F</button>
+        </div>
+        <button id="toggle-mode" onclick="toggleMode()">🌙 / ☀️</button>
+    </div>
+    <script>
+        const cityWeatherData = {
+            "New York": { temp: 22, desc: "Sunny" },
+            "London": { temp: 18, desc: "Cloudy" },
+            "Tokyo": { temp: 25, desc: "Clear Sky" },
+            "Paris": { temp: 20, desc: "Rainy" },
+            "Dubai": { temp: 35, desc: "Hot" },
+            "Sydney": { temp: 24, desc: "Breezy" },
+            "Berlin": { temp: 19, desc: "Overcast" },
+            "Moscow": { temp: 10, desc: "Snowy" },
+            "Mumbai": { temp: 30, desc: "Humid" },
+            "Toronto": { temp: 15, desc: "Windy" },
+            "Delhi": { temp: 32, desc: "Hazy" },
+            "Bangalore": { temp: 28, desc: "Pleasant" },
+            "Chennai": { temp: 31, desc: "Humid" },
+            "Kolkata": { temp: 29, desc: "Partly Cloudy" },
+            "Hyderabad": { temp: 27, desc: "Mild" },
+            "Los Angeles": { temp: 26, desc: "Warm" },
+            "Chicago": { temp: 16, desc: "Cool Breeze" },
+            "San Francisco": { temp: 20, desc: "Foggy" },
+            "Beijing": { temp: 14, desc: "Smoggy" },
+            "Singapore": { temp: 33, desc: "Humid and Cloudy" },
+            "Seoul": { temp: 21, desc: "Crisp Air" },
+            "Hong Kong": { temp: 26, desc: "Misty" },
+            "Bangkok": { temp: 34, desc: "Hot and Humid" },
+            "Cairo": { temp: 36, desc: "Scorching" },
+            "Cape Town": { temp: 22, desc: "Breezy" }
+        };
+        
+        function getWeather() {
+            let city = document.getElementById("city-input").value.trim();
+            city = city.charAt(0).toUpperCase() + city.slice(1).toLowerCase();
+            
+            if (cityWeatherData[city]) {
+                document.getElementById("city-name").innerText = city;
+                document.getElementById("temperature").innerText = `${cityWeatherData[city].temp}°C`;
+                document.getElementById("description").innerText = cityWeatherData[city].desc;
+            } else {
+                alert("City not found. Please enter a valid city.");
+            }
+        }
+        
+        function handleKeyPress(event) {
+            if (event.key === "Enter") {
+                getWeather();
+            }
+        }
+        function toggleUnit() {
+            let tempElement = document.getElementById("temperature");
+            let temp = parseFloat(tempElement.innerText);
+            if (tempElement.innerText.includes("°C")) {
+                tempElement.innerText = `${((temp * 9/5) + 32).toFixed(1)}°F`;
+            } else {
+                tempElement.innerText = `${(((temp - 32) * 5/9).toFixed(1))}°C`;
+            }
+        }
+        function toggleMode() {
+            let body = document.body;
+            if (body.style.background.includes("#89f7fe")) {
+                body.style.background = "linear-gradient(120deg, #232526, #414345)";
+            } else {
+                body.style.background = "linear-gradient(120deg, #89f7fe, #66a6ff)";
+            }
+        }
+    </script>
+</body>
+</html>
